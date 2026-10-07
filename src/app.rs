@@ -294,32 +294,30 @@ impl TaskManagerApp {
                 ui.horizontal(|ui| {
                     ui.spacing_mut().item_spacing.x = 10.0;
 
-                    // App icon + WinUI 3 Title
+                    // RigMap App Icon (Dark rounded square with orange pulse waveform)
                     let (icon_rect, _) =
-                        ui.allocate_exact_size(Vec2::new(20.0, 20.0), Sense::hover());
+                        ui.allocate_exact_size(Vec2::new(22.0, 22.0), Sense::hover());
+                    ui.painter().rect(
+                        icon_rect,
+                        Rounding::same(5.0),
+                        Color32::from_rgb(10, 10, 10),
+                        Stroke::new(1.0_f32, Color32::from_rgb(55, 55, 55)),
+                    );
+                    let pulse_orange = Color32::from_rgb(245, 130, 32);
+                    let cy = icon_rect.center().y;
+                    let lx = icon_rect.left();
+                    let pulse_pts = vec![
+                        Pos2::new(lx + 1.5, cy),
+                        Pos2::new(lx + 5.5, cy),
+                        Pos2::new(lx + 7.5, cy - 6.0),
+                        Pos2::new(lx + 10.5, cy + 5.5),
+                        Pos2::new(lx + 13.0, cy - 1.8),
+                        Pos2::new(lx + 15.8, cy + 1.5),
+                        Pos2::new(lx + 18.0, cy),
+                        Pos2::new(icon_rect.right() - 1.5, cy),
+                    ];
                     ui.painter()
-                        .rect_filled(icon_rect, Rounding::same(5.0), palette.accent);
-                    ui.painter().line_segment(
-                        [
-                            Pos2::new(icon_rect.left() + 3.0, icon_rect.center().y + 2.0),
-                            Pos2::new(icon_rect.left() + 7.5, icon_rect.center().y - 3.0),
-                        ],
-                        Stroke::new(1.8_f32, palette.accent_text_on_fill),
-                    );
-                    ui.painter().line_segment(
-                        [
-                            Pos2::new(icon_rect.left() + 7.5, icon_rect.center().y - 3.0),
-                            Pos2::new(icon_rect.left() + 12.0, icon_rect.center().y + 3.0),
-                        ],
-                        Stroke::new(1.8_f32, palette.accent_text_on_fill),
-                    );
-                    ui.painter().line_segment(
-                        [
-                            Pos2::new(icon_rect.left() + 12.0, icon_rect.center().y + 3.0),
-                            Pos2::new(icon_rect.right() - 3.0, icon_rect.center().y - 4.0),
-                        ],
-                        Stroke::new(1.8_f32, palette.accent_text_on_fill),
-                    );
+                        .add(egui::Shape::line(pulse_pts, Stroke::new(1.8_f32, pulse_orange)));
 
                     ui.label(
                         RichText::new("RigMap")
